@@ -2,9 +2,11 @@
 platform: linux
 
 image_resource:
-  type: docker-image
+  type: registry-image
   source:
-    repository: platformengineering/concourse-ansible-resource
+    repository: crl-docker.jfrog.io/carnegierobotics/concourse-ansible-resource
+    username: ((artifactory_registry_user))
+    password: ((artifactory_registry_token))
     tag: "latest"
 
 run:

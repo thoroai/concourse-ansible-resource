@@ -3,31 +3,49 @@ resources:
 - name: repository-concourse-ansible-resource
   type: git
   source:
-    uri: https://github.com/SpringerPE/concourse-ansible-resource.git
-    branch: master
+    uri: https://github.com/thoroai/concourse-ansible-resource.git
+    branch: feat/update-ansible
 
 - name: task-docker-image
-  type: docker-image
+  type: registry-image
   source:
-    email: {{docker-hub-email}}
-    username: {{docker-hub-username}}
-    password: {{docker-hub-password}}
-    repository: platformengineering/concourse-ansible-resource
+    repository: crl-docker.jfrog.io/carnegierobotics/concourse-ansible-resource
+    username: ((artifactory_registry_user))
+    password: ((artifactory_registry_token))
 
 jobs:
 - name: job-build-task-docker-image
-  public: true
   serial: true
   plan:
   - get: repository-concourse-ansible-resource
     trigger: true
+  - task: build
+    privileged: true
+    config:
+      platform: linux
+      # Use OCI builder -- now standard according to Concourse's
+      # registry-image resource docs. See:
+      # https://github.com/concourse/registry-image-resource#out-push-an-image-up-to-the-registry-under-the-given-tags
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      params:
+        DOCKERFILE: repository-concourse-ansible-resource/Dockerfile
+      inputs:
+        - name: repository-concourse-ansible-resource
+      outputs:
+        - name: image
+      run:
+        path: build
+      caches:
+        - path: cache
   - put: task-docker-image
     params:
-      build: repository-concourse-ansible-resource
+      image: image/image.tar
 
 
 - name: job-test-task-docker-image
-  public: true
   serial: true
   plan:
   - aggregate:

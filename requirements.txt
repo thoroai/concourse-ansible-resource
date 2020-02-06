@@ -1,23 +1,23 @@
-ansible==2.3.2.0
+ansible==2.9.4
 
-awscli==1.11.131
-pywinrm==0.2.2
+awscli==1.17.11
+pywinrm==0.4.1
 dopy==0.3.7
 pysphere==0.1.7
-python-consul==0.7.1
-f5-sdk==2.3.3
+python-consul==1.1.0
+f5-sdk==3.0.21
 bigsuds==1.0.6
 netaddr==0.7.19
-boto==2.48.0
-azure==2.0.0
-cs==1.1.1
+boto==2.49.0
+azure==4.0.0
+cs==2.7.1
 docker-py==1.10.6
-docker-compose==1.15.0
-apache-libcloud==2.1.0
-shade==1.22.2
-pyvmomi==6.5.0.2017.5.post1
-datadog==0.16.0
-zabbix-api==0.4
+docker-compose==1.25.4
+apache-libcloud==2.8.0
+shade==1.32.0
+pyvmomi==6.7.3
+datadog==0.34.0
+zabbix-api==0.5.4
 
 cfconfigurator>=0.2.4
 bosh_inventory>=0.2.2
