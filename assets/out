@@ -25,9 +25,9 @@ from resource import Resource
 
 # Future: from ansible.inventory.manager import InventoryManager
 # from ansible.executor.stats import AggregateStats
-from ansible.inventory import Inventory
+from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
-from ansible.vars import VariableManager
+from ansible.vars.manager import VariableManager
 from ansible.executor.playbook_executor import PlaybookExecutor
 from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.errors import AnsibleError
@@ -115,11 +115,11 @@ class PlaybookCLI(CLI):
             loader.set_vault_password(vault_password)
         # Ansible 2.4
         #
-        #inventory = InventoryManager(loader, inventory_path)
-        #variable_manager = VariableManager(loader=loader, inventory=inventory)
+        inventory = InventoryManager(loader, inventory_path)
+        variable_manager = VariableManager(loader=loader, inventory=inventory)
         #
         # Ansible 2.3.x
-        variable_manager = VariableManager()
+        #variable_manager = VariableManager()
         if extra_vars:
             variable_manager.extra_vars = load_extra_vars(loader=loader, options=self.options)
         variable_manager.options_vars = load_options_vars(self.options)
@@ -127,8 +127,8 @@ class PlaybookCLI(CLI):
             variable_manager.host_vars_files = host_vars
         if group_vars:
             variable_manager.group_vars_files = group_vars
-        inventory = Inventory(loader, variable_manager, inventory_path)
-        variable_manager.set_inventory(inventory)
+        #inventory = Inventory(loader, variable_manager, inventory_path)
+        #variable_manager.set_inventory(inventory)
         # End Ansible
         if become_password is not None:
             passwords['become_pass'] = become_password
